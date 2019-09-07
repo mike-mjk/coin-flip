@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import AutoFlip from "./AutoFlip";
 import Counter from "./Counter";
 import Discrepancy from "./Discrepancy";
 import FlipOnceButton from "./FlipOnceButton";
@@ -37,6 +38,7 @@ class App extends React.Component {
     super(props);
 
     this.handleFlip = this.handleFlip.bind(this);
+    this.handleAutoFlip = this.handleAutoFlip.bind(this);
 
     this.state = {
       heads: 0,
@@ -58,12 +60,20 @@ class App extends React.Component {
     this.setState(setBiggestDiscrepancySoFar);
   }
 
+  handleAutoFlip() {
+    this.handleFlip();
+    setInterval(() => {
+      this.handleFlip();
+    }, 1);
+  }
+
   render() {
     const { heads, tails, currentDiscrepancy, biggestDiscrepancy } = this.state;
     return (
       <React.Fragment>
         <Counter heads={heads} tails={tails} />
         <FlipOnceButton onFlip={this.handleFlip} />
+        <AutoFlip onStart={this.handleAutoFlip} />
         <Discrepancy
           current={currentDiscrepancy}
           biggest={biggestDiscrepancy}
